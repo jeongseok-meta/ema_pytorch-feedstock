@@ -29,13 +29,9 @@ requirements:
     - pytorch
 
 tests:
-  - python:
-      imports:
-        - ema_pytorch
-      pip_check: true
-      python_version: ${{ python_min }}.*
   - script:
       - pip check
+      - python -c "import ema_pytorch"
       - python run_test.py
     files:
       recipe:
@@ -44,6 +40,7 @@ tests:
       run:
         - pip
         - python ${{ python_min }}.*
+        - pytorch * cpu*
 
 about:
   homepage: https://github.com/lucidrains/ema-pytorch

@@ -1,0 +1,57 @@
+schema_version: 1
+
+context:
+  name: ema_pytorch
+  version: "0.7.9"
+  python_min: "3.10"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/${{ name[0] }}/${{ name }}/ema_pytorch-${{ version }}.tar.gz
+  sha256: a8ccdf2eeecce5489de02fc7c9776ef55400220afff92b8223f7516cb570b594
+
+build:
+  number: 1
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - setuptools
+  run:
+    - numpy
+    - python >=${{ python_min }}
+    - pytorch
+
+tests:
+  - python:
+      imports:
+        - ema_pytorch
+      pip_check: true
+      python_version: ${{ python_min }}.*
+  - script:
+      - pip check
+      - python run_test.py
+    files:
+      recipe:
+        - run_test.py
+    requirements:
+      run:
+        - pip
+        - python ${{ python_min }}.*
+
+about:
+  homepage: https://github.com/lucidrains/ema-pytorch
+  repository: https://github.com/lucidrains/ema-pytorch
+  summary: A simple way to keep track of an Exponential Moving Average (EMA) version of your Pytorch model
+  license: MIT
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - jeongseok-meta
